@@ -1,0 +1,8 @@
+Alex 100000
+Rain 80000
+Egon 50000
+Yuan 30000
+Test 100
+ask 200
+wo 100
+hao 10
