@@ -1,0 +1,71 @@
+__author__ = 'progress'
+
+import re
+def select_wage():
+    '''查询操作'''
+    username = input('请输入要查询的员工姓名(例如：Alex):')
+    with open('info.txt', 'r', encoding='utf-8') as r_file:
+        r_file.seek(0)
+        for line in r_file:
+            line = line.strip().split()
+            print(line)
+            if username == line[0]:
+                print('%s的工资是:%s.' % (username, line[1]))
+            continue
+
+def add_new_person():
+    '''添加员工操作'''
+    new_user = input('请输入要增加的员工姓名和工资,共空格分割(例如：Eric 100000):')
+    with open('info.txt', 'a', encoding='utf-8') as r_file:
+        r_file.seek(0)
+        r_file.writelines('\n' + new_user.strip())
+    print('添加成功')
+
+def run_wage():
+    '''工资系统操作'''
+    print('欢迎登陆工资系统'.center(50,'*'))
+    while True:
+        date = [('查询员工工资'), ('修改员工工资'), ('增加新员工记录'), ('退出')]
+        for index,line in enumerate(date,start=1):
+            print(index,line)
+        choose = input('请选择>>>:')
+        if choose.isdigit():
+            choose = int(choose)
+            if choose < len(date) + 1 and choose >= 0:
+                if choose == 1:
+                    select_wage()
+                elif choose == 2:
+                    exit_flags = False
+                    while not exit_flags:
+                        change = input('请输入要修改的员工姓名和工资,用空格分隔(例如：Alex 10):')
+                        with open('info.txt', 'r', encoding='utf-8') as r_file:
+                            # r_file.seek(0)
+                            read_info = []
+                            for line in r_file:
+                                if re.match('%s' % change.strip().split()[0], line):
+                                    continue
+                                else:
+                                    read_info.append(line)
+                            read_info.append('\n'+change)         #修改之后不换行，已经调整2018-03-07
+                            print(read_info)
+                            with open('info.txt', 'w', encoding='utf-8') as f_file:
+                                # f_file.seek(0)
+                                for line in read_info:
+                                    f_file.writelines(line)
+                                print('修改成功')
+                                break
+                elif choose == 3:
+                    add_new_person()
+                else:
+                    print('退出成功')
+                    break
+            else:
+                print('输入的[%s]不存在!'% choose)
+                continue
+        else:
+            print('输入的[%s]错误,请重新输入!'% choose)
+            continue
+
+run_wage()
+
+
